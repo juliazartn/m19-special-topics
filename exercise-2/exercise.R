@@ -4,7 +4,7 @@ library(rpart)
 library(rpart.plot)
 
 # Read in data
-setwd('~/Documents/info-201/m15-special-topics/exercise-2')
+setwd('~/Desktop/INFO 201/m19-special-topics/exercise-2')
 homes <- read.csv('data/housing-data.csv')
 
 # Function to compare values
@@ -32,24 +32,25 @@ for(i in 1:100) {
   # Create test and training data
   # Hint: http://stackoverflow.com/questions/17200114/how-to-split-data-into-training-testing-sets-using-sample-function-in-r-program
   # 1. Create training and testing datasets by sampling 75% of your data from your `homes` dataframe.
-  
-  
+    train.indices <- sample(seq_len(nrow(homes)), size = sample.size)
+    train.data <- homes[train.indices,]
+    test.data <- homes[-train.indices,]
+    
   # 2. Pass your **training data** to the `rpart` function to run a simple classification operation
-  
+  basic.fit <- rpart(in_sf ~ ., data = train.data, method = "class")
   
   # 3. Pass your results to the `AssessFit` function to assess the fit
-  
+  train.assessment <- AssessFit(basic.fit, data = test.data)
   
   # 4. Store your assessment in the `basic.fits` vector
-  
+   basic.fits <- c(basic.fits, train.assessment)
 }
 
 # 5. Make a histogram of your `basic.fits` vector
-
+hist(basic.fits)
 
 # 6. Take the mean of your `basic.fits` vector
-
-
+mean(basic.fits)
 
 # 7. Pass your most recent model to the `rpart.plot` function to graph it
-
+rpart.plot(basic.fit)
